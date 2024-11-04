@@ -11,11 +11,11 @@ public class HealthCollectable : MonoBehaviour
         {
             if (controller.health < controller.maxHealth)
             {
-                 controller.ChangeHealth(1);
-                 Destroy(gameObject);
-            }
-
+                controller.ChangeHealth(1);
+                Destroy(gameObject);
+            } 
+        
         }
-
+    
     }
 }
