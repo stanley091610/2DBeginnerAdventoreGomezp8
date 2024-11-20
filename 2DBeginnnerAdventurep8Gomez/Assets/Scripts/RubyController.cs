@@ -7,6 +7,9 @@ public class RubyController : MonoBehaviour
     public float speed = 3.0f;
 
     public int maxHealth = 5;
+
+    public GameObject projectilePrefab;
+
     public float timeInvincible = 2.0f;
     public int health { get { return currentHealth; } }
     int currentHealth;
@@ -44,9 +47,9 @@ public class RubyController : MonoBehaviour
             lookDirection.Set(move.x, move.y);
             lookDirection.Normalize();
         }
-        animator.SetFloat("Look x", lookDirection.x);
-        animator.SetFloat("Look y", lookDirection.y);
-        animator.SetFloat("speed", move.magnitude);
+        animator.SetFloat("Look X", lookDirection.x);
+        animator.SetFloat("Look Y", lookDirection.y);
+        animator.SetFloat("Speed", move.magnitude);
 
         if (isInvincible)
         {
@@ -55,6 +58,10 @@ public class RubyController : MonoBehaviour
             {
                 isInvincible = false;
             }
+        }
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            Launch();
         }
     
     }
@@ -71,6 +78,7 @@ public class RubyController : MonoBehaviour
         if (amount < 0)
         {
             animator.SetTrigger("Hit");
+
             if (isInvincible)
             {
                 return;
@@ -81,5 +89,14 @@ public class RubyController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);   
     }
-}
 
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(lookDirection, 300);
+
+        animator.SetTrigger("Launch");
+    }
+}
